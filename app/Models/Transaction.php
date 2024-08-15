@@ -9,7 +9,7 @@ class Transaction extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['sender_wallet_id', 'receiver_wallet_id', 'quantia'];
+    protected $fillable = ['sender_wallet_id', 'receiver_wallet_id', 'quantia', 'tipo'];
 
     public function senderWallet()
     {

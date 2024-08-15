@@ -1,66 +1,229 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Backend para o Projeto de Transferência de Carteiras
+Este é o backend para o projeto de gerenciamento e transferência de carteiras. O backend foi construído usando Laravel e fornece uma API para gerenciar carteiras e realizar transferências entre elas, a transferêcnia pode ser para outros usuários que tenha carteira cadastrada, ou pra uma outra carteira que
+o usuário criou pra ele.
 
-## About Laravel
+## Requisitos
+PHP 8.0 ou superior
+Composer
+MySQL
+Node.js e npm (opcional, para gerenciamento de dependências)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Instalação
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+1. Clone o repositório:   
+        git clone https://github.com/lucaasbritto/card_back.git
 
-## Learning Laravel
+2. Acesse o diretório do projeto:
+    cd seu-repositorio
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+3. Configure o arquivo .env:
+    Renomeie o arquivo .env.example para .env e configure as variáveis de ambiente conforme necessário,
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+4. Gere a chave de aplicativo do Laravel:
+    php artisan key:generate
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+5. Execute as migrações:
+    php artisan migrate
 
-## Laravel Sponsors
+6. Inicie o servidor local:
+    php artisan serve
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
 
-### Premium Partners
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+## ENDPOINT DA API
 
-## Contributing
+### Listar Carteiras
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- **URL:** `GET /api/wallets`
+- **Descrição:** Retorna a lista de todas as carteiras do usuário logado.
+- **Resposta:**
+    ```json
+    [
+        {
+            "id": 1,
+            "cod": "0001",
+            "userName": "João"
+        },
+        {
+            "id": 2,
+            "cod": "0002",
+            "userName": "Maria"
+        }
+    ]
+    ```
 
-## Code of Conduct
+### Listar Usuários com Carteira
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- **URL:** `GET /api/walletUsers`
+- **Descrição:** Retorna a lista de usuários que possuem carteiras.
+- **Resposta:**
+    ```json
+    [
+        {
+            "id": 1,
+            "name": "João",
+            "email": "joao@example.com"
+        },
+        {
+            "id": 2,
+            "name": "Maria",
+            "email": "maria@example.com"
+        }
+    ]
+    ```
 
-## Security Vulnerabilities
+### Criar Nova Carteira
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- **URL:** `POST /api/wallet-create`
+- **Descrição:** Cria uma nova carteira para o usuário logado.
+- **Requisição:**
+    ```json
+    {
+        "name": "Minha Nova Carteira",
+        "initial_balance": 100
+    }
+    ```
+- **Resposta:**
+    ```json
+    {
+        "id": 3,
+        "cod": "0003",
+        "name": "Minha Nova Carteira",
+        "balance": 100
+    }
+    ```
 
-## License
+### Obter Detalhes da Carteira
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- **URL:** `GET /api/wallet/{id}`
+- **Descrição:** Retorna os detalhes de uma carteira específica pelo ID.
+- **Resposta:**
+    ```json
+    {
+        "id": 1,
+        "cod": "0001",
+        "name": "Carteira João",
+        "balance": 150
+    }
+    ```
+
+### Buscar Pessoa pela Chave PIX
+
+- **URL:** `GET /api/wallet-pix`
+- **Descrição:** Retorna as informações da pessoa associada a uma chave PIX.
+- **Requisição:**
+    ```json
+    {
+        "pix_key": "12345678901"
+    }
+    ```
+- **Resposta:**
+    ```json
+    {
+        "name": "Ana",
+        "wallet_code": "0004"
+    }
+    ```
+
+### Realizar Transferência
+
+- **URL:** `POST /api/transfer`
+- **Descrição:** Realiza uma transferência de valor entre carteiras ou via PIX.
+- **Requisição:**
+    ```json
+    {
+        "sender_wallet_id": 1,
+        "receiver_wallet_id": 2,
+        "quantia": 50,
+        "transfer_type": "wallet"
+    }
+    ```
+- **Resposta:**
+    ```json
+    {
+        "success": true,
+        "message": "Transferência realizada com sucesso."
+    }
+    ```
+
+### Obter Transações
+
+- **URL:** `GET /api/transactions`
+- **Descrição:** Retorna uma lista de transações realizadas.
+- **Resposta:**
+    ```json
+    [
+        {
+            "id": 1,
+            "sender_wallet_id": 1,
+            "receiver_wallet_id": 2,
+            "amount": 50,
+            "date": "2024-08-15T12:00:00Z"
+        }
+    ]
+    ```
+
+### Obter Usuário Atual
+
+- **URL:** `GET /api/user`
+- **Descrição:** Retorna o ID do usuário atualmente autenticado.
+- **Resposta:**
+    ```json
+    {
+        "id": 1,
+        "name": "João",
+        "email": "joao@example.com"
+    }
+    ```
+
+### Login
+
+- **URL:** `POST /api/login`
+- **Descrição:** Autentica um usuário e retorna um token de acesso.
+- **Requisição:**
+    ```json
+    {
+        "email": "user@example.com",
+        "password": "password"
+    }
+    ```
+- **Resposta:**
+    ```json
+    {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwibmFtZSI6Ikp1YW4iLCJpYXQiOjE2MjY0NzcwMDAsImV4cCI6MTYyNjQ4MDYwMH0.SXJ7T3E1zZC4R9sydS2ujZlA5gmlYqSTLsCC5Z4R0CI"
+    }
+    ```
+
+### Registro
+
+- **URL:** `POST /api/register`
+- **Descrição:** Registra um novo usuário e cria uma conta.
+- **Requisição:**
+    ```json
+    {
+        "name": "João",
+        "email": "joao@example.com",
+        "password": "password",
+        "confirm_password": "password"
+    }
+    ```
+- **Resposta:**
+    ```json
+    {
+        "success": true,
+        "message": "Usuário registrado com sucesso."
+    }
+    ```
+
+### Obter Taxas de Câmbio
+
+- **URL:** `GET /api/exchange-rates`
+- **Descrição:** Retorna as taxas de câmbio atuais, como a cotação do USD para BRL.
+- **Resposta:**
+    ```json
+    {
+        "usd_to_brl": 5.30
+    }
+    ```
